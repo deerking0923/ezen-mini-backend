@@ -12,21 +12,22 @@ import org.springframework.lang.NonNull;
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    
+
     /**
      * CORS 매핑을 추가하는 메서드
+     * 
      * @param registry CORS 설정을 위한 CorsRegistry 객체
      */
     @Override
     public void addCorsMappings(@NonNull CorsRegistry registry) {
-        registry.addMapping("/**")  // 모든 경로에 대해 CORS 설정 적용
+        registry.addMapping("/**") // 모든 경로에 대해 CORS 설정 적용
                 .allowedOrigins(
-                    "http://localhost:3000",   // Next.js 개발 서버
-                    "http://localhost:8080"    // Spring Boot 개발 서버
+                        "http://43.202.10.10:3000/", // Next.js 개발 서버
+                        "http://43.202.10.10:8080/" // Spring Boot 개발 서버
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")           // 모든 헤더 허용
-                .allowCredentials(true)        // 인증 정보 허용
-                .maxAge(3600);                 // preflight 캐시 시간 (1시간)
+                .allowedHeaders("*") // 모든 헤더 허용
+                .allowCredentials(true) // 인증 정보 허용
+                .maxAge(3600); // preflight 캐시 시간 (1시간)
     }
-} 
+}
