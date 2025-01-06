@@ -107,4 +107,15 @@ public class QuestionService {
         return questionMapper.toResponse(updatedQuestion);
     }
 
+    @Transactional
+    public void deleteQuestion(Integer id) {
+        try {
+            if (!questionRepository.existsById(id)) {
+                throw new DataNotFoundException("질문을 찾을 수 없습니다. id: " + id);
+            }
+            questionRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("질문 삭제 중 오류가 발생했습니다. 오류 메시지: " + e.getMessage(), e);
+        }
+    }
 }

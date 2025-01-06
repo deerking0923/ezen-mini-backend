@@ -22,52 +22,62 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/v1/questions")
 @RequiredArgsConstructor
 public class QuestionController {
-    private final QuestionService questionService;
+        private final QuestionService questionService;
 
-    @Operation(summary = "질문 목록 조회", description = "페이지네이션된 질문 목록을 조회합니다.")
-    @ApiResponses(value = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = QuestionResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
-    @GetMapping
-    public ApiResponse<Page<QuestionResponse>> getQuestions(
-            @RequestParam(defaultValue = "0") int page) {
-        return ApiResponse.success(questionService.getQuestions(page));
-    }
+        @Operation(summary = "질문 목록 조회", description = "페이지네이션된 질문 목록을 조회합니다.")
+        @ApiResponses(value = {
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = QuestionResponse.class))),
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+        })
+        @GetMapping
+        public ApiResponse<Page<QuestionResponse>> getQuestions(
+                        @RequestParam(defaultValue = "0") int page) {
+                return ApiResponse.success(questionService.getQuestions(page));
+        }
 
-    @Operation(summary = "질문 생성", description = "새로운 질문을 생성합니다.")
-    @ApiResponses(value = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "생성 성공", content = @Content(schema = @Schema(implementation = QuestionResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<QuestionResponse> createQuestion(
-            @Valid @RequestBody QuestionCreateRequest request) {
-        return ApiResponse.success(questionService.createQuestion(request));
-    }
+        @Operation(summary = "질문 생성", description = "새로운 질문을 생성합니다.")
+        @ApiResponses(value = {
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "생성 성공", content = @Content(schema = @Schema(implementation = QuestionResponse.class))),
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+        })
+        @PostMapping
+        @ResponseStatus(HttpStatus.CREATED)
+        public ApiResponse<QuestionResponse> createQuestion(
+                        @Valid @RequestBody QuestionCreateRequest request) {
+                return ApiResponse.success(questionService.createQuestion(request));
+        }
 
-    @Operation(summary = "질문 상세 조회", description = "특정 ID의 질문을 조회합니다.")
-    @ApiResponses(value = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = QuestionResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "질문 없음", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
-    @GetMapping("/{id}")
-    public ApiResponse<QuestionResponse> getQuestion(@PathVariable Integer id) {
-        return ApiResponse.success(questionService.getQuestion(id));
-    }
+        @Operation(summary = "질문 상세 조회", description = "특정 ID의 질문을 조회합니다.")
+        @ApiResponses(value = {
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = QuestionResponse.class))),
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "질문 없음", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+        })
+        @GetMapping("/{id}")
+        public ApiResponse<QuestionResponse> getQuestion(@PathVariable Integer id) {
+                return ApiResponse.success(questionService.getQuestion(id));
+        }
 
-    @Operation(summary = "질문 수정", description = "특정 ID의 질문을 수정합니다.")
-    @ApiResponses(value = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "수정 성공", content = @Content(schema = @Schema(implementation = QuestionResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "질문 없음", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
-    @PutMapping("/{id}")
-    public ApiResponse<QuestionResponse> updateQuestion(
-            @PathVariable Integer id,
-            @Valid @RequestBody QuestionUpdateRequest request) {
-        return ApiResponse.success(questionService.updateQuestion(id, request));
-    }
+        @Operation(summary = "질문 수정", description = "특정 ID의 질문을 수정합니다.")
+        @ApiResponses(value = {
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "수정 성공", content = @Content(schema = @Schema(implementation = QuestionResponse.class))),
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "질문 없음", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+        })
+        @PutMapping("/{id}")
+        public ApiResponse<QuestionResponse> updateQuestion(
+                        @PathVariable Integer id,
+                        @Valid @RequestBody QuestionUpdateRequest request) {
+                return ApiResponse.success(questionService.updateQuestion(id, request));
+        }
 
+        @Operation(summary = "질문 삭제", description = "특정 ID의 질문을 삭제합니다.")
+        @ApiResponses(value = {
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "삭제 성공"),
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "질문 없음", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+        })
+        @DeleteMapping("/{id}")
+        @ResponseStatus(HttpStatus.NO_CONTENT) // 삭제 성공 시 No Content 상태 코드 반환
+        public void deleteQuestion(@PathVariable Integer id) {
+                questionService.deleteQuestion(id);
+        }
 }
