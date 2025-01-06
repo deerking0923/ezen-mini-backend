@@ -19,4 +19,10 @@ public class QuestionCreateRequest {
     @NotBlank(message = "작성자 필수 입력값입니다.")
     @Size(max = 200)
     private String author; // 작성자
+
+    // QuestionCreateRequest.java
+    @NotBlank(message = "비밀번호는 필수 입력값입니다.")
+    @Size(min = 4, max = 10, message = "비밀번호는 최소 4자 이상이어야 합니다.")
+    private String password;
+
 }

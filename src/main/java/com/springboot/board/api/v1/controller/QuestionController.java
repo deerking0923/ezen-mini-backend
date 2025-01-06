@@ -14,6 +14,9 @@ import com.springboot.board.common.response.ErrorResponse;
 import com.springboot.board.api.v1.dto.request.QuestionCreateRequest;
 import com.springboot.board.api.v1.dto.request.QuestionUpdateRequest;
 import com.springboot.board.api.v1.dto.response.QuestionResponse;
+
+import java.util.Map;
+
 import org.springframework.data.domain.Page;
 import jakarta.validation.Valid;
 
@@ -82,10 +85,29 @@ public class QuestionController {
         }
 
         @Operation(summary = "오늘의 질문", description = "랜덤으로 오늘의 질문을 반환합니다.")
+        @ApiResponses(value = {
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "랜덤 질문 반환 성공", content = @Content(schema = @Schema(implementation = QuestionResponse.class))),
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "질문 없음", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+        })
         @GetMapping("/random")
         public ApiResponse<QuestionResponse> getRandomQuestion() {
                 QuestionResponse randomQuestion = questionService.getRandomQuestion();
                 return ApiResponse.success(randomQuestion);
+        }
+
+        // 비밀번호 확인 로직
+        @Operation(summary = "비밀번호 확인", description = "질문의 비밀번호가 일치하는지 확인합니다.")
+        @ApiResponses(value = {
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "비밀번호 확인 성공"),
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "질문 없음", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+        })
+        @PostMapping("/{id}/check-password")
+        public ApiResponse<Boolean> checkPassword(
+                        @PathVariable Integer id,
+                        @RequestBody Map<String, String> request) {
+                String inputPassword = request.get("password");
+                boolean isMatch = questionService.checkPassword(id, inputPassword);
+                return ApiResponse.success(isMatch);
         }
 
 }

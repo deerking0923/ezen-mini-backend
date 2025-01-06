@@ -135,4 +135,13 @@ public class QuestionService {
         Question randomQuestion = questions.get(rand.nextInt(questions.size())); // 랜덤으로 질문 선택
         return questionMapper.toResponse(randomQuestion); // 선택된 질문을 DTO로 반환
     }
+
+    // 비밀먼호가 같은지 확인하는 메소드
+    @Transactional(readOnly = true)
+    public boolean checkPassword(Integer id, String inputPassword) {
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("질문을 찾을 수 없습니다."));
+        return question.getPassword().equals(inputPassword);
+    }
+
 }

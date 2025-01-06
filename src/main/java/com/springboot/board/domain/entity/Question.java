@@ -49,6 +49,10 @@ public class Question {
     @Column(columnDefinition = "int default 0")
     private int viewCount = 0; // 기본값을 0으로 설정
 
+    // Question.java
+    @Column(nullable = false, length = 200)
+    private String password;
+
     @Builder
     public Question(String subject, String content, String author) {
         this.subject = subject;
