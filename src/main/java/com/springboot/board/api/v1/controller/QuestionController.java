@@ -12,6 +12,7 @@ import com.springboot.board.application.service.QuestionService;
 import com.springboot.board.common.response.ApiResponse;
 import com.springboot.board.common.response.ErrorResponse;
 import com.springboot.board.api.v1.dto.request.QuestionCreateRequest;
+import com.springboot.board.api.v1.dto.request.QuestionUpdateRequest;
 import com.springboot.board.api.v1.dto.response.QuestionResponse;
 import org.springframework.data.domain.Page;
 import jakarta.validation.Valid;
@@ -55,4 +56,18 @@ public class QuestionController {
     public ApiResponse<QuestionResponse> getQuestion(@PathVariable Integer id) {
         return ApiResponse.success(questionService.getQuestion(id));
     }
+
+    @Operation(summary = "질문 수정", description = "특정 ID의 질문을 수정합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "수정 성공", content = @Content(schema = @Schema(implementation = QuestionResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "질문 없음", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PutMapping("/{id}")
+    public ApiResponse<QuestionResponse> updateQuestion(
+            @PathVariable Integer id,
+            @Valid @RequestBody QuestionUpdateRequest request) {
+        return ApiResponse.success(questionService.updateQuestion(id, request));
+    }
+
 }

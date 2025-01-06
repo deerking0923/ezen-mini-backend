@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import com.springboot.board.domain.repository.QuestionRepository;
 import com.springboot.board.api.v1.dto.request.QuestionCreateRequest;
+import com.springboot.board.api.v1.dto.request.QuestionUpdateRequest;
 import com.springboot.board.api.v1.dto.response.QuestionResponse;
 import com.springboot.board.application.mapper.QuestionMapper;
 import com.springboot.board.domain.entity.Question;
@@ -86,4 +87,24 @@ public class QuestionService {
         return questionRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("질문을 찾을 수 없습니다."));
     }
+
+    @Transactional
+    public QuestionResponse updateQuestion(Integer id, QuestionUpdateRequest request) {
+
+        // ID를 기반으로 기존 질문을 조회
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("질문을 찾을 수 없습니다."));
+
+        // 기존 질문 정보를 업데이트
+        question.setSubject(request.getSubject());
+        question.setContent(request.getContent());
+        question.setAuthor(request.getAuthor()); // author도 수정 가능
+
+        // 변경된 질문을 데이터베이스에 저장
+        Question updatedQuestion = questionRepository.save(question);
+
+        // 업데이트된 질문을 QuestionResponse DTO로 변환하여 반환
+        return questionMapper.toResponse(updatedQuestion);
+    }
+
 }

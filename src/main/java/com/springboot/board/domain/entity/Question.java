@@ -13,6 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.Builder;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ import com.springboot.board.common.util.DateTimeUtil;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @Builder(toBuilder = true) // 빌더를 다시 생성할 때 모든 필드 포함
 @AllArgsConstructor // 필드 매핑 문제 해결
 public class Question {
