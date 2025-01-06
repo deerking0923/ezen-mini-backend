@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Builder;
@@ -53,6 +54,12 @@ public class Question {
         this.author = author; // 작성자 추가
         this.viewCount = 0; // 기본값 0으로 초기화
         this.createDate = DateTimeUtil.now();
+    }
+
+    // createDate를 자동으로 설정하는 메서드
+    @PrePersist
+    public void prePersist() {
+        this.createDate = this.createDate == null ? LocalDateTime.now() : this.createDate;
     }
 
     // 조회수 증가 메서드 추가
