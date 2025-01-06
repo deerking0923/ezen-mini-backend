@@ -80,4 +80,12 @@ public class QuestionController {
         public void deleteQuestion(@PathVariable Integer id) {
                 questionService.deleteQuestion(id);
         }
+
+        @Operation(summary = "오늘의 질문", description = "랜덤으로 오늘의 질문을 반환합니다.")
+        @GetMapping("/random")
+        public ApiResponse<QuestionResponse> getRandomQuestion() {
+                QuestionResponse randomQuestion = questionService.getRandomQuestion();
+                return ApiResponse.success(randomQuestion);
+        }
+
 }

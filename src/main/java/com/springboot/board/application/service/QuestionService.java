@@ -8,6 +8,10 @@ package com.springboot.board.application.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+import java.util.Random;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -117,5 +121,18 @@ public class QuestionService {
         } catch (Exception e) {
             throw new RuntimeException("질문 삭제 중 오류가 발생했습니다. 오류 메시지: " + e.getMessage(), e);
         }
+    }
+
+    // 랜덤 문장 조회
+    // 랜덤 질문을 반환하는 메서드 추가
+    @Transactional(readOnly = true)
+    public QuestionResponse getRandomQuestion() {
+        List<Question> questions = questionRepository.findAll(); // 모든 질문을 리스트로 가져옴
+        if (questions.isEmpty()) {
+            throw new DataNotFoundException("질문이 없습니다.");
+        }
+        Random rand = new Random();
+        Question randomQuestion = questions.get(rand.nextInt(questions.size())); // 랜덤으로 질문 선택
+        return questionMapper.toResponse(randomQuestion); // 선택된 질문을 DTO로 반환
     }
 }
