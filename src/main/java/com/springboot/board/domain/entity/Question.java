@@ -44,8 +44,8 @@ public class Question {
     @Column(length = 100) // 작성자 이름의 최대 길이를 100자로 설정
     private String author; // 작성자
 
-    @Column(columnDefinition = "INT DEFAULT 0") // 기본값 0 설정
-    private Integer viewCount; // 조회수
+    @Column(columnDefinition = "int default 0")
+    private int viewCount = 0; // 기본값을 0으로 설정
 
     @Builder
     public Question(String subject, String content, String author) {

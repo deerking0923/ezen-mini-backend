@@ -66,12 +66,19 @@ public class QuestionService {
     // method 이름 변경:getQuestion → getQuestion
     // getQuestion 메서드는 주어진 ID로 질문을 조회하고,
     // 해당 질문이 존재하지 않을 경우 DataNotFoundException을 발생.
+    @Transactional
     public QuestionResponse getQuestion(Integer id) {
         Question question = questionRepository.findByIdWithAnswers(id)
                 .orElseThrow(() -> new DataNotFoundException("질문을 찾을 수 없습니다."));
-        question.incrementViewCount();
-        questionRepository.save(question);
+        question.incrementViewCount(); // 조회수 증가
+        questionRepository.save(question); // 데이터베이스에 반영
         return questionMapper.toResponse(question);
+    }
+
+    @Transactional
+    private void increaseViewCount(Question question) {
+        question.incrementViewCount(); // 엔티티 메서드 호출로 ViewCount 증가
+        questionRepository.save(question); // 변경사항 저장
     }
 
     // Entity 조회를 위한 메서드 추가
