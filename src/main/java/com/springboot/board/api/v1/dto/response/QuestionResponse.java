@@ -13,4 +13,8 @@ public class QuestionResponse {
     private String content;
     private LocalDateTime createDate;
     private List<AnswerResponse> answers;
+
+    // 새 필드 추가
+    private String author; // 작성자
+    private Integer viewCount; // 조회수
 }

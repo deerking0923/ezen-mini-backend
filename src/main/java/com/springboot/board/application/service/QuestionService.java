@@ -69,7 +69,8 @@ public class QuestionService {
     public QuestionResponse getQuestion(Integer id) {
         Question question = questionRepository.findByIdWithAnswers(id)
                 .orElseThrow(() -> new DataNotFoundException("질문을 찾을 수 없습니다."));
-
+        question.incrementViewCount();
+        questionRepository.save(question);
         return questionMapper.toResponse(question);
     }
 

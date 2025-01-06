@@ -14,11 +14,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Builder;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+
 import com.springboot.board.common.util.DateTimeUtil;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Builder(toBuilder = true) // 빌더를 다시 생성할 때 모든 필드 포함
+@AllArgsConstructor // 필드 매핑 문제 해결
 public class Question {
 
     @Id
@@ -26,23 +30,33 @@ public class Question {
     private Integer id;
 
     @Column(length = 200)
-    private String subject; //
+    private String subject;
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private LocalDateTime createDate; // 질문이 생성된 날짜 및 시간
+    private LocalDateTime createDate;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answers;
 
-    // 원본코드는 setter를 사용하고 있어 객체의 상태를 변경할 수 있어 불안정하다.
-    // 따라서 생성자를 사용하여 객체를 생성하는 것이 좋다.
-    // 그래서 Builder 패턴을 사용하여 질문 객체를 생성하기 위한 생성자를 추가한다.
+    @Column(length = 100) // 작성자 이름의 최대 길이를 100자로 설정
+    private String author; // 작성자
+
+    @Column(columnDefinition = "INT DEFAULT 0") // 기본값 0 설정
+    private Integer viewCount; // 조회수
+
     @Builder
-    public Question(String subject, String content) {
+    public Question(String subject, String content, String author) {
         this.subject = subject;
         this.content = content;
+        this.author = author; // 작성자 추가
+        this.viewCount = 0; // 기본값 0으로 초기화
         this.createDate = DateTimeUtil.now();
+    }
+
+    // 조회수 증가 메서드 추가
+    public void incrementViewCount() {
+        this.viewCount++;
     }
 }
