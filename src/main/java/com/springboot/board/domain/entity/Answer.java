@@ -11,11 +11,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.FetchType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.Builder;
 import lombok.AccessLevel;
 import com.springboot.board.common.util.DateTimeUtil;
 
 @Getter
+@Setter
 @Entity
 // 기본 생성자를 protected로 설정하여 외부에서 직접 인스턴스를 생성하지 못하도록 함
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
+import com.springboot.board.domain.entity.Answer;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -14,4 +16,10 @@ public class AnswerResponse {
     private Integer id;
     private String content;
     private LocalDateTime createDate;
+
+    public AnswerResponse(Answer answer) {
+        this.id = answer.getId();
+        this.content = answer.getContent();
+        this.createDate = answer.getCreateDate(); // getCreateDate()로 수정
+    }
 }
