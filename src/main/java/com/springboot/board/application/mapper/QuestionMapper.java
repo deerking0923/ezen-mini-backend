@@ -19,6 +19,7 @@ public interface QuestionMapper {
 
     // Question 엔티티에서 QuestionResponse로 변환
     @Mapping(target = "answers", source = "answers") // 답변 매핑
+    @Mapping(target = "password", source = "password")
     QuestionResponse toResponse(Question question);
 
     // Answer 엔티티 리스트를 AnswerResponse 리스트로 변환

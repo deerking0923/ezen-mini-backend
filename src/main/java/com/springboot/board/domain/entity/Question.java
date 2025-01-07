@@ -54,12 +54,13 @@ public class Question {
     private String password;
 
     @Builder
-    public Question(String subject, String content, String author) {
+    public Question(String subject, String content, String author, String password) {
         this.subject = subject;
         this.content = content;
         this.author = author; // 작성자 추가
         this.viewCount = 0; // 기본값 0으로 초기화
         this.createDate = DateTimeUtil.now();
+        this.password = password;
     }
 
     // createDate를 자동으로 설정하는 메서드
