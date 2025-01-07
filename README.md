@@ -1,36 +1,8 @@
-# EZEN Mini 프로젝트 백엔드
+# 프로젝트 개요
 
-### 설명
+프로젝트 이름: 나만의 문장을 만나다
 
-- Ezen Boot Camp mini 프로젝트 백엔드 파트
-- 수업내용을 원본으로 API server 구현 리팩토링
-- Vscode , intellij 둘 다 사용 가능
-- Spring Boot를 사용한 질문-답변 게시판 API 서버
-- RESTful API 설계 원칙 준수
-- 표준화된 응답 형식과 에러 처리
-- Swagger를 통한 API 문서화
-- CICD 구현되어 있습니다. 이 부분 에러는 무시하세요.
-
-### author:
-
-- Ezen A Team
-
-### Verion:
-
-- 2.4.0 (2025-01-05) - 날짜/시간 표기 디버깅 완료
-- 2.3.2 (2025-01-05) - cicd 의존성 업데이트.
-- 2.3.1 (2025-01-05) - 날짜/시간 표기 디버깅 완료
-- 2.3.0 (2025-01-05) - Jackson 파일 날짜표기 한국시간으로 변경
-- 2.2.0 (2025-01-05) - 질문 상세조회 시 답변 목록 추가
-- 2.1.0 (2025-01-03) - Health Check 추가
-- 2.0.1 (2025-01-02) - CICD 구현
-- 2.0.0 (2025-01-02) - 표준화로의 노력
-- 1.0.0 (2025-01-01) - 기본형
-
-## API 문서 확인
-
-- Swagger UI: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
-- API 문서: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
+설명: 좋아하는 문장들을 가득 담아 매일 랜덤으로 받아보는 인문학 아카이브
 
 ## 기술 스택
 
@@ -41,259 +13,140 @@
 - Lombok
 - Swagger (SpringDoc OpenAPI)
 - MapStruct
+- VSCode
+- CI/CD
+- RESTful API
+
+## 버전 정보
+
+- 3.0.0 (2025-01-07) - 글과 답변 형식의 기본형. 시큐리티 제외. 랜덤 문장 받아오기 기능 구현. 글 수정 / 삭제 가능. 답변 갯수 표시. 글 필드에 비밀번호가 포함되어 작성자만 수정 삭제 가능.
 
 ## 설치 및 실행 방법
 
-1. 필요한 소프트웨어 설치:
+1. 필요한 소프트웨어 설치 (JDK 17이상, MySQL, Maven)
+2. 프로젝트 클론
 
-   - JDK 17 이상
-   - Maven
-   - MySQL
-   - Postman (필요시)
-
-2. 프로젝트 클론:
-
-   ```bash
-   git clone https://github.com/joshbae119/ezen-mini-backend.git
-   ```
-
-3. 애플리케이션 실행:
-
-   ```bash
-   mvn clean install
-   mvn spring-boot:run
-   ```
-
-4. 의존성 설치 (.env 파일 생성):
-
-   Data Base
-
-   - DB_URL=
-   - DB_USERNAME=
-   - DB_PASSWORD=
-
-   Jackson Configuration
-
-   - JACKSON_WRITE_DATES_AS_TIMESTAMPS=false
-   - JACKSON_FAIL_ON_EMPTY_BEANS=false
-   - JACKSON_FAIL_ON_UNKNOWN_PROPERTIES=false
-   - JACKSON_DEFAULT_PROPERTY_INCLUSION=NON_NULL
-
-   Timezone
-
-   - TZ=Asia/Seoul
-
-## 패키지 구조
-
-```mermaid
-graph LR
-    A[com.springboot.board] --> B[api]
-    B --> C[v1]
-    C --> D[controller]
-    D --> E[QuestionController]
-    D --> F[AnswerController]
-    C --> G[dto]
-    G --> H[request]
-    H --> I[QuestionCreateRequest]
-    H --> J[AnswerCreateRequest]
-    G --> K[response]
-    K --> L[QuestionResponse]
-    K --> M[AnswerResponse]
-
-    A --> Q[application]
-    Q --> R[service]
-    R --> S[QuestionService]
-    R --> T[AnswerService]
-    Q --> U[mapper]
-    U --> V[QuestionMapper]
-    U --> W[AnswerMapper]
-
-    A --> X[domain]
-    X --> Y[entity]
-    Y --> Z[Question]
-    Y --> AA[Answer]
-    X --> AB[repository]
-    AB --> AC[QuestionRepository]
-    AB --> AD[AnswerRepository]
-
-    A --> AE[common]
-    AE --> AF[exception]
-    AF --> AG[DataNotFoundException]
-    AF --> AH[GlobalExceptionHandler]
-    AE --> AI[response]
-    AI --> AJ[ApiResponse]
-    AI --> AK[ErrorResponse]
-
-    A --> AM[config]
-    AM --> AN[WebConfig]
-    AM --> AO[SwaggerConfig]
-    AM --> AP[JacksonConfig]
-    AM --> AQ[JpaConfig]
+```bash
+git clone https://github.com/deerking0923/ezen-mini-backend.git
 ```
 
-## 패키지 설명
+1. .env 파일에 DB 설정
 
-### api
+```bash
+DB_URL=
+DB_USERNAME=
+DB_PASSWORD=
 
-REST API 관련 컴포넌트를 포함
+# Server Configuration
+SERVER_PORT=8080
 
-- `v1`: API 버전 1
-  - `controller`: REST API 엔드포인트 처리 (QuestionController, AnswerController)
-  - `dto`: 데이터 전송 객체
-    - `request`: 클라이언트 요청 데이터 (QuestionCreateRequest, AnswerCreateRequest)
-    - `response`: 클라이언트 응답 데이터 (QuestionResponse, AnswerResponse)
+# JWT Configuration (추후 사용)
+JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRATION_MS=86400000
 
-### application
+# Timezone
+TZ=Asia/Seoul
 
-비즈니스 로직 처리 계층
-
-- `service`: 비즈니스 로직 구현 (QuestionService, AnswerService)
-- `mapper`: DTO-Entity 변환 처리 (QuestionMapper, AnswerMapper)
-
-### domain
-
-핵심 비즈니스 로직과 엔티티 정의
-
-- `entity`: JPA 엔티티 클래스 (Question, Answer)
-- `repository`: 데이터 접근 계층 (QuestionRepository, AnswerRepository)
-
-### common
-
-공통 유틸리티 및 설정
-
-- `exception`: 예외 처리 관련 클래스 (DataNotFoundException, GlobalExceptionHandler)
-- `response`: 표준 응답 형식 정의 (ApiResponse, ErrorResponse)
-
-### config
-
-애플리케이션 설정 클래스
-
-- WebConfig: CORS 설정
-- SwaggerConfig: API 문서화 설정
-- JacksonConfig: JSON 직렬화 설정
-- JpaConfig: JPA 관련 설정
-
-## Question 시퀀스
-
-```mermaid
-sequenceDiagram
-    participant C as Client
-    participant QC as QuestionController
-    participant QS as QuestionService
-    participant QM as QuestionMapper
-    participant QR as QuestionRepository
-    participant DB as Database
-
-    %% 질문 생성 (POST)
-    C->>+QC: POST /api/v1/questions
-    Note over C,QC: @RequestBody QuestionCreateRequest
-    Note right of C: { "subject": "질문 제목", "content": "질문 내용" }
-
-    QC->>+QS: createQuestion(request)
-
-    QS->>+QM: toEntity(request)
-    Note over QM: MapStruct를 사용하여<br/>DTO를 Entity로 변환
-    QM-->>-QS: Question Entity
-
-    QS->>+QR: save(question)
-    QR->>+DB: INSERT Question
-    DB-->>-QR: Saved Question Data
-    QR-->>-QS: Saved Question Entity
-
-    QS->>+QM: toResponse(savedQuestion)
-    Note over QM: Entity를 DTO로 변환
-    QM-->>-QS: QuestionResponse
-
-    QS-->>-QC: QuestionResponse
-    QC-->>-C: ApiResponse<QuestionResponse>
-    Note right of C: { "success": true,<br/>"data": { "id": 1, "subject": "질문 제목", ... } }
-
-    %% 질문 목록 조회 (GET)
-    C->>+QC: GET /api/v1/questions?page=0
-    QC->>+QS: getQuestions(page)
-
-    QS->>+QR: findAll(pageable)
-    QR->>+DB: SELECT Questions
-    DB-->>-QR: Question List
-    QR-->>-QS: Page<Question>
-
-    QS->>+QM: map(questionMapper::toResponse)
-    QM-->>-QS: Page<QuestionResponse>
-
-    QS-->>-QC: Page<QuestionResponse>
-    QC-->>-C: ApiResponse<Page<QuestionResponse>>
-
-    %% 단일 질문 조회 (GET)
-    C->>+QC: GET /api/v1/questions/{id}
-    QC->>+QS: getQuestion(id)
-
-    QS->>+QR: findById(id)
-    QR->>+DB: SELECT Question
-    DB-->>-QR: Question Data
-    QR-->>-QS: Optional<Question>
-
-    QS->>+QM: toResponse(question)
-    QM-->>-QS: QuestionResponse
-
-    QS-->>-QC: QuestionResponse
-    QC-->>-C: ApiResponse<QuestionResponse>
+# Jackson Configurationmvn spring
+JACKSON_WRITE_DATES_AS_TIMESTAMPS=false
+JACKSON_FAIL_ON_EMPTY_BEANS=false
+JACKSON_FAIL_ON_UNKNOWN_PROPERTIES=false
+JACKSON_DEFAULT_PROPERTY_INCLUSION=NON_NULL
 ```
 
-<br>
-<br>
+1. 실행
 
-## Answer 시퀀스
+```bash
+# 기존 빌드 결과물을 삭제(clean)하고 프로젝트를 컴파일, 테스트, 패키징하여 최종 빌드(install) 생성
+mvn clean install
 
-```mermaid
-sequenceDiagram
-    participant C as Client
-    participant AC as AnswerController
-    participant AS as AnswerService
-    participant AM as AnswerMapper
-    participant QS as QuestionService
-    participant AR as AnswerRepository
-    participant DB as Database
-
-    %% 답변 생성 (POST)
-    C->>+AC: POST /api/v1/answers
-    Note over C,AC: @RequestBody AnswerCreateRequest
-    Note right of C: { "content": "답변 내용", "questionId": 1 }
-
-    AC->>+AS: createAnswer(request)
-
-    AS->>+AM: toEntity(request)
-
-    AM->>+QS: mapQuestion(questionId)
-    Note over QS: Question 엔티티 조회
-    QS-->>-AM: Question Entity
-
-    Note over AM: MapStruct를 사용하여<br/>DTO를 Entity로 변환
-    AM-->>-AS: Answer Entity
-
-    AS->>+AR: save(answer)
-    AR->>+DB: INSERT Answer
-    DB-->>-AR: Saved Answer Data
-    AR-->>-AS: Saved Answer Entity
-
-    AS->>+AM: toResponse(savedAnswer)
-    Note over AM: Entity를 DTO로 변환
-    AM-->>-AS: AnswerResponse
-
-    AS-->>-AC: AnswerResponse
-    AC-->>-C: ApiResponse<AnswerResponse>
-    Note right of C: { "success": true,<br/>"data": { "id": 1, "content": "답변 내용" } }
-
-    %% 예외 처리 시나리오
-    Note over C,DB: 질문이 존재하지 않는 경우
-    C->>+AC: POST /api/v1/answers
-    Note right of C: { "content": "답변 내용", "questionId": 999 }
-
-    AC->>+AS: createAnswer(request)
-    AS->>+AM: toEntity(request)
-    AM->>+QS: mapQuestion(questionId)
-    QS-->>-AM: throw DataNotFoundException
-    AM-->>-AS: Exception
-    AS-->>-AC: Exception
-    AC-->>-C: ApiResponse<Error>
-    Note right of C: { "success": false,<br/>"error": "질문을 찾을 수 없습니다." }
+# Spring Boot 애플리케이션을 실행(run)
+mvn spring-boot:run
 ```
+
+## API 문서 확인
+
+- Swagger UI: http://localhost:8080/swagger-ui/index.html
+- API 문서: http://localhost:8080/v3/api-docs
+
+## API 설명
+
+1. Answer
+- (POST) /api/v1/answers - 답변 생성
+- (PUT) /api/v1/answers/{id} 답변 수정
+1. Health
+- (GET) /api/v1/health - 헬스 체크
+1. Question
+- (GET) /api/v1/questions - 질문 목록 조회
+- (POST) /api/v1/questions - 질문 생성
+- (GET) /api/v1/questions/{id} - 질문 상세 조회
+- (PUT) /api/v1/questions/{id} - 질문 수정
+- (DELETE) /api/v1/questions/{id} - 질문 삭제
+- (POST) /api/v1/questions/{id}/check-password - 비밀번호 확인
+- (GET) /api/v1/questions/random - 오늘의 질문
+
+## 프로젝트 구조
+
+```bash
+src/
+├── main/
+│   ├── java/com/springboot/board/
+│   │   ├── api/v1/                  # API 관련 클래스 (컨트롤러, DTO 등)
+│   │   │   ├── controller/          # REST API 컨트롤러
+│   │   │   ├── dto/                 # 요청(Request) 및 응답(Response) DTO
+│   │   │   └── service/             # 비즈니스 로직 클래스
+│   │   ├── application/mapper/      # Entity와 DTO 간 매핑 클래스
+│   │   ├── common/                  # 공통 기능 (예외 처리, 유틸리티, 설정 등)
+│   │   │   ├── config/              # 설정 클래스 (Swagger, Jackson 등)
+│   │   │   ├── exception/           # 예외 처리 클래스
+│   │   │   └── util/                # 공통 유틸리티
+│   │   ├── domain/                  # 도메인 관련 클래스
+│   │   │   ├── entity/              # JPA Entity 클래스
+│   │   │   └── repository/          # 데이터베이스 액세스 (JPA Repository)
+│   │   ├── web/                     # Spring Boot 메인 클래스
+│   ├── resources/                   # 리소스 파일 (설정, 정적 리소스 등)
+│       └── application.yml          # Spring Boot 애플리케이션 설정 파일
+├── test/                            # 테스트 코드
+├── .github/workflows/               # GitHub Actions 워크플로우 파일
+├── pom.xml                          # Maven 의존성 및 빌드 설정 파일
+└── README.md                        # 프로젝트 설명 파일
+
+```
+
+## 주요 폴더 설명
+
+### **api/v1**
+
+- **controller**: REST API 엔드포인트를 정의한 클래스.
+    - `QuestionController`: 질문 관련 API 처리.
+    - `AnswerController`: 답변 관련 API 처리.
+    - `HealthController`: 서비스 상태 확인 API.
+- **dto**: 데이터 요청(Request) 및 응답(Response) 객체.
+    - `request`: API 요청 데이터 클래스.
+    - `response`: API 응답 데이터 클래스.
+
+### **application**
+
+- **mapper**: DTO와 Entity 간 데이터 변환을 위한 클래스.
+    - `QuestionMapper`, `AnswerMapper`: 데이터 매핑.
+
+### **common**
+
+- **config**: 설정 파일 (Swagger, Jackson, JPA 등).
+    - `SwaggerConfig`: API 문서를 자동 생성하는 Swagger 설정.
+    - `JacksonConfig`: JSON 직렬화/역직렬화 설정.
+    - `WebConfig`: 웹 관련 설정.
+- **exception**: 예외 처리 클래스.
+    - `GlobalExceptionHandler`: 전역 예외 처리.
+    - `DataNotFoundException`: 데이터 조회 실패 시 예외.
+
+### **domain**
+
+- **entity**: JPA Entity 클래스 (데이터 모델).
+    - `Question`, `Answer`, `BaseTimeEntity`.
+- **repository**: 데이터베이스 접근을 위한 JPA Repository.
+    - 관련 인터페이스 정의.
+
+## 참고 OPEN API
+
+https://www.weatherapi.com/
