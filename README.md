@@ -146,7 +146,3 @@ src/
     - `Question`, `Answer`, `BaseTimeEntity`.
 - **repository**: 데이터베이스 접근을 위한 JPA Repository.
     - 관련 인터페이스 정의.
-
-## 참고 OPEN API
-
-https://www.weatherapi.com/
