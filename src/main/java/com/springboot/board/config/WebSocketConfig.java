@@ -12,6 +12,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(new ChatWebSocketHandler(), "/ws/chat")
-                .setAllowedOrigins("*"); // 메인 도메인만 허용
+                .setAllowedOrigins("https://realdeerworld.com", "http://localhost:3000"); // 도메인 추가
     }
 }
