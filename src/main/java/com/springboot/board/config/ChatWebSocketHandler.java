@@ -29,17 +29,28 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        String payload = message.getPayload();
-        MessageCreateRequest request = new ObjectMapper().readValue(payload, MessageCreateRequest.class);
+        try {
+            String payload = message.getPayload();
+            MessageCreateRequest request = new ObjectMapper().readValue(payload, MessageCreateRequest.class);
 
-        // 메시지 데이터베이스 저장
-        MessageResponse savedMessage = messageService.createMessage(request);
+            // 메시지 데이터베이스 저장
+            MessageResponse savedMessage = messageService.createMessage(request);
 
-        // 연결된 모든 클라이언트에게 메시지 브로드캐스트
-        for (WebSocketSession webSocketSession : sessions) {
-            if (webSocketSession.isOpen()) {
-                webSocketSession.sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(savedMessage)));
+            // 연결된 모든 클라이언트에게 메시지 브로드캐스트
+            for (WebSocketSession webSocketSession : sessions) {
+                if (webSocketSession.isOpen()) {
+                    try {
+                        webSocketSession
+                                .sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(savedMessage)));
+                    } catch (Exception e) {
+                        System.err.println("메시지 전송 실패: " + webSocketSession.getId());
+                        e.printStackTrace();
+                    }
+                }
             }
+        } catch (Exception e) {
+            System.err.println("메시지 처리 중 오류 발생:");
+            e.printStackTrace();
         }
     }
 
