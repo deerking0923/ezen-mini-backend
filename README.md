@@ -16,6 +16,7 @@
 - VSCode
 - CI/CD
 - RESTful API
+- Nginx
 
 ## 버전 정보
 
