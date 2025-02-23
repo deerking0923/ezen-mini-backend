@@ -13,4 +13,7 @@ public class MainController {
     public RedirectView root() {
         return new RedirectView("/api/v1/questions");
     }
+
+    
+
 } 

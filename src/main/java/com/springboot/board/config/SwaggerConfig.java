@@ -24,13 +24,13 @@ public class SwaggerConfig {
         @Bean
         public OpenAPI openAPI() {
                 Info info = new Info()
-                                .title("EZEN학원 A조 API 설명서")
+                                .title("SkyPlanner API 설명서서")
                                 .version("v2.0.0")
                                 .description("Spring Boot Board REST API 문서")
                                 .contact(new Contact()
                                                 .name("깃허브소스코드 바로가기")
                                                 // .email("stable.luckychu@gmail.com")
-                                                .url("https://github.com/joshbae119/ezen-mini-backend.git"));
+                                                .url("https://github.com/deerking0923/ezen-mini-backend.git"));
                 // .license(new License()
                 // .name("Apache License Version 2.0")
                 // .url("http://www.apache.org/licenses/LICENSE-2.0"));
