@@ -22,6 +22,10 @@ public class SoulCreateRequest {
     @NotBlank(message = "이름은 필수 입력값입니다.")
     @Size(max = 255)
     private String name;
+    
+    // 추가: 순서 (몇번째 영혼인지)
+    @NotNull(message = "순서는 필수 입력값입니다.")
+    private Integer orderNum;
 
     @NotNull(message = "시작 날짜는 필수 입력값입니다.")
     private LocalDate startDate;

@@ -12,6 +12,7 @@ public class SoulResponse {
     private String seasonName;
     private String representativeImage;
     private String name;
+    private Integer orderNum;
     private LocalDate startDate;
     private LocalDate endDate;
     private int rerunCount;

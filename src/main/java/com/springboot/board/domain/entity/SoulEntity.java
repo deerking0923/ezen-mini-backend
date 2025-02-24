@@ -26,6 +26,10 @@ public class SoulEntity {
     @Column(length = 255, nullable = false)
     private String name;
 
+    // 순서를 나타내는 필드 (몇번째 영혼인지)
+    @Column(name = "order_num", nullable = false)
+    private int orderNum;
+
     @Column(nullable = false)
     private LocalDate startDate;
 
@@ -65,10 +69,10 @@ public class SoulEntity {
     @CollectionTable(name = "soul_right_side_nodes", joinColumns = @JoinColumn(name = "soul_id"))
     private List<SoulNode> rightSideNodes;
     
-    // 추가된 필드
+    // 추가 필드: 제작자와 설명
     @Column(length = 255)
-    private String creator; // 제작자 명
+    private String creator;
     
     @Column(columnDefinition = "TEXT")
-    private String description; // 설명
+    private String description;
 }

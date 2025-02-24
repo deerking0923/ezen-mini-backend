@@ -47,10 +47,11 @@ public class SoulService {
     public SoulResponse updateSoul(Integer id, SoulUpdateRequest request) {
         SoulEntity soulEntity = soulRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("영혼 노드를 찾을 수 없습니다. id: " + id));
-    
+
         soulEntity.setSeasonName(request.getSeasonName());
         soulEntity.setRepresentativeImage(request.getRepresentativeImage());
         soulEntity.setName(request.getName());
+        soulEntity.setOrderNum(request.getOrderNum());  // 추가: 순서 필드
         soulEntity.setStartDate(request.getStartDate());
         soulEntity.setEndDate(request.getEndDate());
         soulEntity.setRerunCount(request.getRerunCount());
@@ -78,11 +79,11 @@ public class SoulService {
                        .map(soulMapper::toSoulNode)
                        .toList() : null
         );
-    
+
         SoulEntity updatedSoul = soulRepository.save(soulEntity);
         return soulMapper.toResponse(updatedSoul);
     }
-    
+
     @Transactional
     public void deleteSoul(Integer id) {
         if (!soulRepository.existsById(id)) {
