@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.Page;
 import jakarta.validation.Valid;
+import java.util.List;
 
 @Tag(name = "Soul", description = "영혼 노드표 관련 API")
 @RestController
@@ -80,5 +81,15 @@ public class SoulController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteSoul(@PathVariable Integer id) {
         soulService.deleteSoul(id);
+    }
+
+    @Operation(summary = "영혼 검색", description = "키워드, 시즌 이름, 영혼 이름으로 검색합니다.")
+    @ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "검색 성공", content = @Content(schema = @Schema(implementation = SoulResponse.class))),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/search")
+    public ApiResponse<List<SoulResponse>> searchSouls(@RequestParam String query) {
+        return ApiResponse.success(soulService.searchSouls(query));
     }
 }

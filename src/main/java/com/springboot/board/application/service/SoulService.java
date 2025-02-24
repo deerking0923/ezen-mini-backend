@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -51,7 +52,7 @@ public class SoulService {
         soulEntity.setSeasonName(request.getSeasonName());
         soulEntity.setRepresentativeImage(request.getRepresentativeImage());
         soulEntity.setName(request.getName());
-        soulEntity.setOrderNum(request.getOrderNum());  // 추가: 순서 필드
+        soulEntity.setOrderNum(request.getOrderNum());
         soulEntity.setStartDate(request.getStartDate());
         soulEntity.setEndDate(request.getEndDate());
         soulEntity.setRerunCount(request.getRerunCount());
@@ -60,7 +61,6 @@ public class SoulService {
         soulEntity.setWearingShotImages(request.getWearingShotImages());
         soulEntity.setKeywords(request.getKeywords());
         
-        // 추가된 필드 업데이트
         soulEntity.setCreator(request.getCreator());
         soulEntity.setDescription(request.getDescription());
         
@@ -90,5 +90,13 @@ public class SoulService {
             throw new DataNotFoundException("영혼 노드를 찾을 수 없습니다. id: " + id);
         }
         soulRepository.deleteById(id);
+    }
+    
+    // 검색 기능 추가
+    public List<SoulResponse> searchSouls(String query) {
+        List<SoulEntity> souls = soulRepository.searchSouls(query);
+        return souls.stream()
+                    .map(soulMapper::toResponse)
+                    .collect(Collectors.toList());
     }
 }
