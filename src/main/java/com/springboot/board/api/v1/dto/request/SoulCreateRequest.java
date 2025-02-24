@@ -34,16 +34,19 @@ public class SoulCreateRequest {
     @Size(max = 255)
     private String locationImage;
 
-    // 제스처 GIF URL을 여러 개 저장
-    private List<@NotBlank String> gestureGifs;
+    private List<String> gestureGifs;
 
-    // 착용샷 이미지 리스트
-    private List<@NotBlank String> wearingShotImages;
+    private List<String> wearingShotImages;
 
-    // 키워드 리스트
-    private List<@NotBlank String> keywords;
-
-    // 노드표 리스트 (없을 수도 있음)
+    private List<String> keywords;
+    
+    // 추가 필드
+    @Size(max = 255)
+    private String creator;
+    
+    private String description;
+    
+    // 노드 관련 필드
     private List<SoulNodeRequest> centerNodes;
     private List<SoulNodeRequest> leftSideNodes;
     private List<SoulNodeRequest> rightSideNodes;

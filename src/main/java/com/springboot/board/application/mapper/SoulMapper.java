@@ -13,19 +13,19 @@ import com.springboot.board.domain.entity.SoulNode;
 @Mapper(componentModel = "spring")
 public interface SoulMapper {
 
-    // SoulCreateRequest → SoulEntity
+    // 생성 요청 → 엔티티 변환
     SoulEntity toEntity(SoulCreateRequest request);
 
-    // SoulUpdateRequest → SoulEntity (업데이트용)
+    // 업데이트 요청 → 엔티티 변환
     SoulEntity toEntity(SoulUpdateRequest request);
 
-    // SoulEntity → SoulResponse
+    // 엔티티 → 응답 DTO 변환
     SoulResponse toResponse(SoulEntity soulEntity);
 
-    // SoulNodeRequest → SoulNode
+    // 노드 요청 DTO → 노드 엔티티 변환
     SoulNode toSoulNode(SoulNodeRequest request);
 
-    // SoulNode → SoulNodeResponse
+    // 노드 엔티티 → 노드 응답 DTO 변환
     SoulNodeResponse toSoulNodeResponse(SoulNode soulNode);
 
     // 리스트 변환

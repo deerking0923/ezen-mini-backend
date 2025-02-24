@@ -47,7 +47,7 @@ public class SoulService {
     public SoulResponse updateSoul(Integer id, SoulUpdateRequest request) {
         SoulEntity soulEntity = soulRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("영혼 노드를 찾을 수 없습니다. id: " + id));
-
+    
         soulEntity.setSeasonName(request.getSeasonName());
         soulEntity.setRepresentativeImage(request.getRepresentativeImage());
         soulEntity.setName(request.getName());
@@ -58,6 +58,11 @@ public class SoulService {
         soulEntity.setGestureGifs(request.getGestureGifs());
         soulEntity.setWearingShotImages(request.getWearingShotImages());
         soulEntity.setKeywords(request.getKeywords());
+        
+        // 추가된 필드 업데이트
+        soulEntity.setCreator(request.getCreator());
+        soulEntity.setDescription(request.getDescription());
+        
         soulEntity.setCenterNodes(
                 request.getCenterNodes() != null ? request.getCenterNodes().stream()
                        .map(soulMapper::toSoulNode)
@@ -73,11 +78,11 @@ public class SoulService {
                        .map(soulMapper::toSoulNode)
                        .toList() : null
         );
-
+    
         SoulEntity updatedSoul = soulRepository.save(soulEntity);
         return soulMapper.toResponse(updatedSoul);
     }
-
+    
     @Transactional
     public void deleteSoul(Integer id) {
         if (!soulRepository.existsById(id)) {
