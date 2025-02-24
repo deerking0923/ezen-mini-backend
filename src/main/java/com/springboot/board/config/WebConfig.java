@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "http://43.202.10.10:8080/", // Spring Boot 개발 서버,
                         "http://localhost:3000",
                         "http://localhost:8080",
-                        "http://realdeerworld.com",
+                        "http://korea-sky-planner.com",
                         "http://www.korea-sky-planner.com",
                         "https://korea-sky-planner.com",
                         "https://www.korea-sky-planner.com")
