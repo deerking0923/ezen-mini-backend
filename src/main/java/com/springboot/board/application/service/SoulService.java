@@ -35,7 +35,7 @@ public class SoulService {
     }
 
     public Page<SoulResponse> getSouls(int page) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "id"));
+        Pageable pageable = PageRequest.of(page, 12, Sort.by(Sort.Direction.DESC, "id"));
         Page<SoulEntity> souls = soulRepository.findAll(pageable);
         return souls.map(soulMapper::toResponse);
     }
