@@ -46,51 +46,47 @@ public class SoulService {
         return soulMapper.toResponse(soul);
     }
 
-@Transactional
-public SoulResponse updateSoul(Integer id, SoulUpdateRequest request) {
-    SoulEntity soulEntity = soulRepository.findById(id)
-            .orElseThrow(() -> new DataNotFoundException("영혼 노드를 찾을 수 없습니다. id: " + id));
+    @Transactional
+    public SoulResponse updateSoul(Integer id, SoulUpdateRequest request) {
+        SoulEntity soulEntity = soulRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("영혼 노드를 찾을 수 없습니다. id: " + id));
 
-    soulEntity.setSeasonName(request.getSeasonName());
-    soulEntity.setRepresentativeImage(request.getRepresentativeImage());
-    soulEntity.setName(request.getName());
-    soulEntity.setOrderNum(request.getOrderNum());
-    soulEntity.setStartDate(request.getStartDate());
-    soulEntity.setEndDate(request.getEndDate());
-    soulEntity.setRerunCount(request.getRerunCount());
-    soulEntity.setLocationImage(request.getLocationImage());
-    soulEntity.setGestureGifs(request.getGestureGifs());
-    soulEntity.setWearingShotImages(request.getWearingShotImages());
-    soulEntity.setKeywords(request.getKeywords());
-    soulEntity.setCreator(request.getCreator());
-    soulEntity.setDescription(request.getDescription());
-    
-    soulEntity.setCenterNodes(
-            request.getCenterNodes() != null 
-                ? request.getCenterNodes().stream()
-                      .map(soulMapper::toSoulNode)
-                      .collect(Collectors.toCollection(ArrayList::new))
-                : null
-    );
-    soulEntity.setLeftSideNodes(
-            request.getLeftSideNodes() != null 
-                ? request.getLeftSideNodes().stream()
-                      .map(soulMapper::toSoulNode)
-                      .collect(Collectors.toCollection(ArrayList::new))
-                : null
-    );
-    soulEntity.setRightSideNodes(
-            request.getRightSideNodes() != null 
-                ? request.getRightSideNodes().stream()
-                      .map(soulMapper::toSoulNode)
-                      .collect(Collectors.toCollection(ArrayList::new))
-                : null
-    );
+        soulEntity.setSeasonName(request.getSeasonName());
+        soulEntity.setRepresentativeImage(request.getRepresentativeImage());
+        soulEntity.setName(request.getName());
+        soulEntity.setOrderNum(request.getOrderNum());
+        soulEntity.setStartDate(request.getStartDate());
+        soulEntity.setEndDate(request.getEndDate());
+        soulEntity.setRerunCount(request.getRerunCount());
+        soulEntity.setLocationImage(request.getLocationImage());
+        soulEntity.setGestureGifs(request.getGestureGifs());
+        soulEntity.setWearingShotImages(request.getWearingShotImages());
+        soulEntity.setKeywords(request.getKeywords());
+        soulEntity.setCreator(request.getCreator());
+        soulEntity.setDescription(request.getDescription());
 
-    SoulEntity updatedSoul = soulRepository.save(soulEntity);
-    return soulMapper.toResponse(updatedSoul);
-}
+        soulEntity.setCenterNodes(
+                request.getCenterNodes() != null
+                        ? request.getCenterNodes().stream()
+                                .map(soulMapper::toSoulNode)
+                                .collect(Collectors.toCollection(ArrayList::new))
+                        : null);
+        soulEntity.setLeftSideNodes(
+                request.getLeftSideNodes() != null
+                        ? request.getLeftSideNodes().stream()
+                                .map(soulMapper::toSoulNode)
+                                .collect(Collectors.toCollection(ArrayList::new))
+                        : null);
+        soulEntity.setRightSideNodes(
+                request.getRightSideNodes() != null
+                        ? request.getRightSideNodes().stream()
+                                .map(soulMapper::toSoulNode)
+                                .collect(Collectors.toCollection(ArrayList::new))
+                        : null);
 
+        SoulEntity updatedSoul = soulRepository.save(soulEntity);
+        return soulMapper.toResponse(updatedSoul);
+    }
 
     @Transactional
     public void deleteSoul(Integer id) {
@@ -99,12 +95,22 @@ public SoulResponse updateSoul(Integer id, SoulUpdateRequest request) {
         }
         soulRepository.deleteById(id);
     }
-    
+
     // 검색 기능 추가
     public List<SoulResponse> searchSouls(String query) {
         List<SoulEntity> souls = soulRepository.searchSouls(query);
         return souls.stream()
-                    .map(soulMapper::toResponse)
-                    .collect(Collectors.toList());
+                .map(soulMapper::toResponse)
+                .collect(Collectors.toList());
     }
+
+    // SoulService.java
+    @Transactional(readOnly = true)
+    public List<SoulResponse> getAllSouls() {
+        List<SoulEntity> souls = soulRepository.findAll();
+        return souls.stream()
+                .map(soulMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
 }
