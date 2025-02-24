@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,45 +46,51 @@ public class SoulService {
         return soulMapper.toResponse(soul);
     }
 
-    @Transactional
-    public SoulResponse updateSoul(Integer id, SoulUpdateRequest request) {
-        SoulEntity soulEntity = soulRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("영혼 노드를 찾을 수 없습니다. id: " + id));
+@Transactional
+public SoulResponse updateSoul(Integer id, SoulUpdateRequest request) {
+    SoulEntity soulEntity = soulRepository.findById(id)
+            .orElseThrow(() -> new DataNotFoundException("영혼 노드를 찾을 수 없습니다. id: " + id));
 
-        soulEntity.setSeasonName(request.getSeasonName());
-        soulEntity.setRepresentativeImage(request.getRepresentativeImage());
-        soulEntity.setName(request.getName());
-        soulEntity.setOrderNum(request.getOrderNum());
-        soulEntity.setStartDate(request.getStartDate());
-        soulEntity.setEndDate(request.getEndDate());
-        soulEntity.setRerunCount(request.getRerunCount());
-        soulEntity.setLocationImage(request.getLocationImage());
-        soulEntity.setGestureGifs(request.getGestureGifs());
-        soulEntity.setWearingShotImages(request.getWearingShotImages());
-        soulEntity.setKeywords(request.getKeywords());
-        
-        soulEntity.setCreator(request.getCreator());
-        soulEntity.setDescription(request.getDescription());
-        
-        soulEntity.setCenterNodes(
-                request.getCenterNodes() != null ? request.getCenterNodes().stream()
-                       .map(soulMapper::toSoulNode)
-                       .toList() : null
-        );
-        soulEntity.setLeftSideNodes(
-                request.getLeftSideNodes() != null ? request.getLeftSideNodes().stream()
-                       .map(soulMapper::toSoulNode)
-                       .toList() : null
-        );
-        soulEntity.setRightSideNodes(
-                request.getRightSideNodes() != null ? request.getRightSideNodes().stream()
-                       .map(soulMapper::toSoulNode)
-                       .toList() : null
-        );
+    soulEntity.setSeasonName(request.getSeasonName());
+    soulEntity.setRepresentativeImage(request.getRepresentativeImage());
+    soulEntity.setName(request.getName());
+    soulEntity.setOrderNum(request.getOrderNum());
+    soulEntity.setStartDate(request.getStartDate());
+    soulEntity.setEndDate(request.getEndDate());
+    soulEntity.setRerunCount(request.getRerunCount());
+    soulEntity.setLocationImage(request.getLocationImage());
+    soulEntity.setGestureGifs(request.getGestureGifs());
+    soulEntity.setWearingShotImages(request.getWearingShotImages());
+    soulEntity.setKeywords(request.getKeywords());
+    soulEntity.setCreator(request.getCreator());
+    soulEntity.setDescription(request.getDescription());
+    
+    soulEntity.setCenterNodes(
+            request.getCenterNodes() != null 
+                ? request.getCenterNodes().stream()
+                      .map(soulMapper::toSoulNode)
+                      .collect(Collectors.toCollection(ArrayList::new))
+                : null
+    );
+    soulEntity.setLeftSideNodes(
+            request.getLeftSideNodes() != null 
+                ? request.getLeftSideNodes().stream()
+                      .map(soulMapper::toSoulNode)
+                      .collect(Collectors.toCollection(ArrayList::new))
+                : null
+    );
+    soulEntity.setRightSideNodes(
+            request.getRightSideNodes() != null 
+                ? request.getRightSideNodes().stream()
+                      .map(soulMapper::toSoulNode)
+                      .collect(Collectors.toCollection(ArrayList::new))
+                : null
+    );
 
-        SoulEntity updatedSoul = soulRepository.save(soulEntity);
-        return soulMapper.toResponse(updatedSoul);
-    }
+    SoulEntity updatedSoul = soulRepository.save(soulEntity);
+    return soulMapper.toResponse(updatedSoul);
+}
+
 
     @Transactional
     public void deleteSoul(Integer id) {
