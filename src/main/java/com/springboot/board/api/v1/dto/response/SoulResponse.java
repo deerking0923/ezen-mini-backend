@@ -22,7 +22,7 @@ public class SoulResponse {
     private List<String> keywords;
     private List<SoulNodeResponse> centerNodes;
     private List<SoulNodeResponse> leftSideNodes;
-    private List<SoulNodeResponse> rightNodes;
+    private List<SoulNodeResponse> rightSideNodes;
     
     // 추가 필드
     private String creator;
