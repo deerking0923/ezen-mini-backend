@@ -27,9 +27,9 @@ public class WebConfig implements WebMvcConfigurer {
                         "http://localhost:3000",
                         "http://localhost:8080",
                         "http://realdeerworld.com",
-                        "http://www.realdeerworld.com",
-                        "https://realdeerworld.com",
-                        "https://www.realdeerworld.com")
+                        "http://www.korea-sky-planner.com",
+                        "https://korea-sky-planner.com",
+                        "https://www.korea-sky-planner.com")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*") // 모든 헤더 허용
                 .allowCredentials(true) // 인증 정보 허용

@@ -24,7 +24,7 @@ public class SwaggerConfig {
         @Bean
         public OpenAPI openAPI() {
                 Info info = new Info()
-                                .title("SkyPlanner API 설명서서")
+                                .title("SkyPlanner API 설명서")
                                 .version("v2.0.0")
                                 .description("Spring Boot Board REST API 문서")
                                 .contact(new Contact()
