@@ -39,7 +39,7 @@ public class SoulCreateRequest {
     private String locationImage;
 
     @Size(max = 255)
-    private String NodeTableImage;
+    private String nodeTableImage;
 
     private List<String> gestureGifs;
 

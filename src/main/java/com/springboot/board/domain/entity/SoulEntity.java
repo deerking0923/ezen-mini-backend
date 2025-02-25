@@ -43,7 +43,7 @@ public class SoulEntity {
     private String locationImage;
 
     @Column(length = 255)
-    private String NodeTableImage;
+    private String nodeTableImage;
 
     @ElementCollection
     @CollectionTable(name = "soul_gesture_gifs", joinColumns = @JoinColumn(name = "soul_id"))
