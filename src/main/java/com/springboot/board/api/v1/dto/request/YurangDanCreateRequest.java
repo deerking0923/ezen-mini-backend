@@ -31,8 +31,6 @@ public class YurangDanCreateRequest {
     @Size(max = 15, message = "최대 15개의 키워드만 가능합니다.")
     private List<String> keywords;
 
-    @Size(max = 255)
-    private String materialUrl;
 
     // 유랑 영혼 배열
     private List<YurangSoulRequest> yurangSouls;

@@ -45,7 +45,6 @@ public class YurangDanService {
         entity.setEndDate(request.getEndDate());
         entity.setSourceUrl(request.getSourceUrl());
         entity.setKeywords(request.getKeywords());
-        entity.setMaterialUrl(request.getMaterialUrl());
         entity.setYurangSouls(request.getYurangSouls() != null
                 ? request.getYurangSouls().stream().map(mapper::toYurangSoul).toList()
                 : null);

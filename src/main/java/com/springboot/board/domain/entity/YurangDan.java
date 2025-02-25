@@ -37,10 +37,6 @@ public class YurangDan {
     @Column(length = 255)
     private String sourceUrl;
 
-    // 자료 URL (출처 링크로 사용)
-    @Column(length = 255)
-    private String materialUrl;
-
     // 키워드 배열 (최대 15개 제한)
     @ElementCollection
     @CollectionTable(name = "yurangdan_keywords", joinColumns = @JoinColumn(name = "yurangdan_id"))

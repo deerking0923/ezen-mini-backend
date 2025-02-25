@@ -16,6 +16,5 @@ public class YurangDanResponse {
     private LocalDate endDate;
     private String sourceUrl;
     private List<String> keywords;
-    private String materialUrl;
     private List<YurangSoulResponse> yurangSouls;
 }

@@ -31,8 +31,6 @@ public class YurangDanUpdateRequest {
     @Size(max = 15, message = "최대 15개의 키워드만 가능합니다.")
     private List<String> keywords;
 
-    @Size(max = 255)
-    private String materialUrl;
 
     private List<YurangSoulRequest> yurangSouls;
 }
