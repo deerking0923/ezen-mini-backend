@@ -66,6 +66,7 @@ public class SoulService {
         soulEntity.setKeywords(request.getKeywords());
         soulEntity.setCreator(request.getCreator());
         soulEntity.setDescription(request.getDescription());
+        soulEntity.setMaterialUrl(request.getMaterialUrl());
 
         soulEntity.setCenterNodes(
                 request.getCenterNodes() != null

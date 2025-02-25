@@ -3,6 +3,7 @@ package com.springboot.board.domain.entity;
 import java.util.List;
 import java.time.LocalDate;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity
@@ -45,6 +46,9 @@ public class SoulEntity {
     @Column(length = 255)
     private String nodeTableImage;
 
+    @Size(max = 255)
+    private String materialUrl;
+
     @ElementCollection
     @CollectionTable(name = "soul_gesture_gifs", joinColumns = @JoinColumn(name = "soul_id"))
     @Column(name = "gif_url")
@@ -71,11 +75,11 @@ public class SoulEntity {
     @ElementCollection
     @CollectionTable(name = "soul_right_side_nodes", joinColumns = @JoinColumn(name = "soul_id"))
     private List<SoulNode> rightSideNodes;
-    
+
     // 추가 필드: 제작자와 설명
     @Column(length = 255)
     private String creator;
-    
+
     @Column(columnDefinition = "TEXT")
     private String description;
 }

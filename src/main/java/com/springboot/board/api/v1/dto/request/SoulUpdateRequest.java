@@ -53,6 +53,8 @@ public class SoulUpdateRequest {
     
     private String description;
     
+    @Size(max = 255)
+    private String materialUrl;
     // 노드 관련 필드
     private List<SoulNodeRequest> centerNodes;
     private List<SoulNodeRequest> leftSideNodes;

@@ -1,5 +1,6 @@
 package com.springboot.board.api.v1.dto.request;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotNull;
@@ -22,7 +23,7 @@ public class SoulCreateRequest {
     @NotBlank(message = "이름은 필수 입력값입니다.")
     @Size(max = 255)
     private String name;
-    
+
     // 추가: 순서 (몇번째 영혼인지)
     @NotNull(message = "순서는 필수 입력값입니다.")
     private Integer orderNum;
@@ -46,13 +47,16 @@ public class SoulCreateRequest {
     private List<String> wearingShotImages;
 
     private List<String> keywords;
-    
+
     // 추가 필드
     @Size(max = 255)
     private String creator;
-    
+
     private String description;
-    
+
+    @Column(length = 255)
+    private String materialUrl;
+
     // 노드 관련 필드
     private List<SoulNodeRequest> centerNodes;
     private List<SoulNodeRequest> leftSideNodes;

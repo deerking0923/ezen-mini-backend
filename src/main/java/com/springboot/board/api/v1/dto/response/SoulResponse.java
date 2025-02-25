@@ -5,6 +5,8 @@ import lombok.Getter;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.validation.constraints.Size;
+
 @Getter
 @Builder
 public class SoulResponse {
@@ -28,4 +30,5 @@ public class SoulResponse {
     // 추가 필드
     private String creator;
     private String description;
+    private String materialUrl;
 }
