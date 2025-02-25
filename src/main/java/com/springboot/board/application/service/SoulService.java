@@ -35,7 +35,7 @@ public class SoulService {
     }
     public Page<SoulResponse> getSouls(int page) {
         // 한 페이지당 12개, 순서(orderNum) 내림차순 정렬
-        Pageable pageable = PageRequest.of(page, 15, Sort.by(Sort.Direction.DESC, "orderNum"));
+        Pageable pageable = PageRequest.of(page, 15, Sort.by(Sort.Direction.DESC, "startDate"));
         Page<SoulEntity> souls = soulRepository.findAll(pageable);
         return souls.map(soulMapper::toResponse);
     }
@@ -109,7 +109,7 @@ public class SoulService {
 
     @Transactional(readOnly = true)
     public List<SoulResponse> getAllSouls() {
-        List<SoulEntity> souls = soulRepository.findAll(Sort.by(Sort.Direction.DESC, "orderNum"));
+        List<SoulEntity> souls = soulRepository.findAll(Sort.by(Sort.Direction.DESC, "startDate"));
         return souls.stream()
                 .map(soulMapper::toResponse)
                 .collect(Collectors.toList());
