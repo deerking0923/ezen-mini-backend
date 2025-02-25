@@ -42,6 +42,9 @@ public class SoulEntity {
     @Column(length = 255)
     private String locationImage;
 
+    @Column(length = 255)
+    private String NodeTableImage;
+
     @ElementCollection
     @CollectionTable(name = "soul_gesture_gifs", joinColumns = @JoinColumn(name = "soul_id"))
     @Column(name = "gif_url")

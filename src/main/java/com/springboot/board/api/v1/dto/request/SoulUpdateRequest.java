@@ -38,6 +38,9 @@ public class SoulUpdateRequest {
     @Size(max = 255)
     private String locationImage;
 
+    @Size(max = 255)
+    private String NodeTableImage;
+    
     private List<String> gestureGifs;
 
     private List<String> wearingShotImages;

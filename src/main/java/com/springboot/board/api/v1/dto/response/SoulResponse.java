@@ -17,6 +17,7 @@ public class SoulResponse {
     private LocalDate endDate;
     private int rerunCount;
     private String locationImage;
+    private String NodeTableImage;
     private List<String> gestureGifs;
     private List<String> wearingShotImages;
     private List<String> keywords;

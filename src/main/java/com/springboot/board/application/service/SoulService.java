@@ -60,6 +60,7 @@ public class SoulService {
         soulEntity.setEndDate(request.getEndDate());
         soulEntity.setRerunCount(request.getRerunCount());
         soulEntity.setLocationImage(request.getLocationImage());
+        soulEntity.setNodeTableImage(request.getNodeTableImage());
         soulEntity.setGestureGifs(request.getGestureGifs());
         soulEntity.setWearingShotImages(request.getWearingShotImages());
         soulEntity.setKeywords(request.getKeywords());
