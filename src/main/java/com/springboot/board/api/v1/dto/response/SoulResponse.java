@@ -27,7 +27,7 @@ public class SoulResponse {
     private List<SoulNodeResponse> leftSideNodes;
     private List<SoulNodeResponse> rightSideNodes;
     
-    // 추가 필드
+    //  
     private String creator;
     private String description;
     private String materialUrl;
