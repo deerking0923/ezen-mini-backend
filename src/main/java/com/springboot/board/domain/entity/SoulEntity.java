@@ -62,6 +62,7 @@ public class SoulEntity {
     @ElementCollection
     @CollectionTable(name = "soul_keywords", joinColumns = @JoinColumn(name = "soul_id"))
     @Column(name = "keyword")
+    @Size(max = 15)
     private List<String> keywords;
 
     @ElementCollection

@@ -34,11 +34,14 @@ public class SoulService {
         return soulMapper.toResponse(savedSoul);
     }
     public Page<SoulResponse> getSouls(int page) {
-        // 한 페이지당 12개, 순서(orderNum) 내림차순 정렬
-        Pageable pageable = PageRequest.of(page, 15, Sort.by(Sort.Direction.DESC, "startDate"));
+        Pageable pageable = PageRequest.of(page, 15, Sort.by(
+            Sort.Order.desc("startDate"),
+            Sort.Order.desc("name")
+        ));
         Page<SoulEntity> souls = soulRepository.findAll(pageable);
         return souls.map(soulMapper::toResponse);
     }
+    
     
 
     public SoulResponse getSoul(Integer id) {
@@ -109,11 +112,15 @@ public class SoulService {
 
     @Transactional(readOnly = true)
     public List<SoulResponse> getAllSouls() {
-        List<SoulEntity> souls = soulRepository.findAll(Sort.by(Sort.Direction.DESC, "startDate"));
+        List<SoulEntity> souls = soulRepository.findAll(Sort.by(
+            Sort.Order.desc("startDate"),
+            Sort.Order.desc("name")
+        ));
         return souls.stream()
                 .map(soulMapper::toResponse)
                 .collect(Collectors.toList());
     }
+    
     
 
 }

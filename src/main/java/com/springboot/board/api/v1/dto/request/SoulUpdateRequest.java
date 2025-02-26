@@ -45,6 +45,7 @@ public class SoulUpdateRequest {
 
     private List<String> wearingShotImages;
 
+    @Size(max = 15)
     private List<String> keywords;
     
     // 추가 필드
