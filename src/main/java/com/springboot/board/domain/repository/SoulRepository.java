@@ -11,8 +11,9 @@ import java.util.List;
 public interface SoulRepository extends JpaRepository<SoulEntity, Integer> {
 
     @Query("SELECT DISTINCT s FROM SoulEntity s LEFT JOIN s.keywords k " +
-           "WHERE s.name LIKE %:query% " +
-           "OR s.seasonName LIKE %:query% " +
-           "OR k LIKE %:query%")
+            "WHERE s.name LIKE %:query% " +
+            "OR s.seasonName LIKE %:query% " +
+            "OR k LIKE %:query% " +
+            "ORDER BY s.startDate DESC, s.name DESC")
     List<SoulEntity> searchSouls(@Param("query") String query);
 }
