@@ -33,16 +33,14 @@ public class SoulService {
         SoulEntity savedSoul = soulRepository.save(soulEntity);
         return soulMapper.toResponse(savedSoul);
     }
+
     public Page<SoulResponse> getSouls(int page) {
         Pageable pageable = PageRequest.of(page, 15, Sort.by(
-            Sort.Order.desc("startDate"),
-            Sort.Order.desc("name")
-        ));
+                Sort.Order.desc("startDate"),
+                Sort.Order.desc("name")));
         Page<SoulEntity> souls = soulRepository.findAll(pageable);
         return souls.map(soulMapper::toResponse);
     }
-    
-    
 
     public SoulResponse getSoul(Integer id) {
         SoulEntity soul = soulRepository.findById(id)
@@ -113,14 +111,22 @@ public class SoulService {
     @Transactional(readOnly = true)
     public List<SoulResponse> getAllSouls() {
         List<SoulEntity> souls = soulRepository.findAll(Sort.by(
-            Sort.Order.desc("startDate"),
-            Sort.Order.desc("name")
-        ));
+                Sort.Order.desc("startDate"),
+                Sort.Order.desc("name")));
         return souls.stream()
                 .map(soulMapper::toResponse)
                 .collect(Collectors.toList());
     }
-    
-    
+
+    @Transactional(readOnly = true)
+    public List<SoulResponse> getAllSoulsReversed() {
+        // 내림차순 정렬의 반대로 오름차순으로 정렬
+        List<SoulEntity> souls = soulRepository.findAll(Sort.by(
+                Sort.Order.asc("startDate"),
+                Sort.Order.asc("name")));
+        return souls.stream()
+                .map(soulMapper::toResponse)
+                .collect(Collectors.toList());
+    }
 
 }
