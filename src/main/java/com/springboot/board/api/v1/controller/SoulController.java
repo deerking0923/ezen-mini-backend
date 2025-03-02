@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.Page;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "Soul", description = "영혼 노드표 관련 API")
 @RestController
@@ -111,6 +112,16 @@ public class SoulController {
         @GetMapping("/reverse")
         public ApiResponse<List<SoulResponse>> getAllSoulsReversed() {
                 return ApiResponse.success(soulService.getAllSoulsReversed());
+        }
+
+        @Operation(summary = "영혼 이웃 글 조회", description = "특정 영혼 노드의 이전 및 다음 이웃 글을 조회합니다.")
+        @ApiResponses(value = {
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = SoulResponse.class))),
+                        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "영혼 노드 없음", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+        })
+        @GetMapping("/{id}/neighbors")
+        public ApiResponse<Map<String, List<SoulResponse>>> getNeighbors(@PathVariable Integer id) {
+                return ApiResponse.success(soulService.getNeighbors(id));
         }
 
 }
