@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "soul")
+@Table(name = "soul_entity")
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor @Builder
 public class SoulEntity {
