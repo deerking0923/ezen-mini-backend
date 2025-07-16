@@ -17,22 +17,25 @@ public interface SoulMapper {
 
     default SoulResponse toResponse(SoulEntity entity) {
         return SoulResponse.builder()
-            .id(entity.getId())
-            .seasonName(entity.getSeasonName())
-            .name(entity.getName())
-            .orderNum(entity.getOrderNum())
-            .startDate(entity.getStartDate())
-            .endDate(entity.getEndDate())
-            .rerunCount(entity.getRerunCount())
-            .keywords(entity.getKeywords())
-            .creator(entity.getCreator())
-            .description(entity.getDescription())
-            .images(entity.getImages().stream().map(img ->
-                ImageResponse.builder()
-                    .imageType(img.getImageType())
-                    .url(img.getUrl())
-                    .build()
-            ).toList())
-            .build();
+                .id(entity.getId())
+                .seasonName(entity.getSeasonName())
+                .name(entity.getName())
+                .orderNum(entity.getOrderNum())
+                .startDate(entity.getStartDate())
+                .endDate(entity.getEndDate())
+                .rerunCount(entity.getRerunCount())
+                .keywords(entity.getKeywords())
+                .creator(entity.getCreator())
+                .description(entity.getDescription())
+                .images(
+                        entity.getImages().stream()
+                                .map(img -> ImageResponse.builder()
+                                        .id(img.getId()) // ⚡️추가
+                                        .imageType(img.getImageType())
+                                        .url(img.getUrl())
+                                        .build())
+                                .toList())
+                .build();
     }
+
 }

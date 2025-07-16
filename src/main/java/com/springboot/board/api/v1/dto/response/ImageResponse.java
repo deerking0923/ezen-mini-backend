@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ImageResponse {
-    private String imageType;
-    private String url;
+    private Long   id;         // ⚡️추가 – 삭제용 PK
+    private String imageType;  // REPRESENTATIVE · LOCATION · …
+    private String url;        // 정적 URL
 }
