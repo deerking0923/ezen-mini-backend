@@ -6,9 +6,9 @@ import lombok.Getter;
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter @Builder
+@Getter
+@Builder
 public class SoulResponse {
-
     private Integer id;
     private String seasonName;
     private String name;
@@ -19,4 +19,5 @@ public class SoulResponse {
     private List<String> keywords;
     private String creator;
     private String description;
+    private List<ImageResponse> images; // ✅ 추가
 }
