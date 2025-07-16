@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor @Builder
 @Entity
-@Table(name = "soul")
+@Table(name = "soul_entity")
 public class SoulEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
