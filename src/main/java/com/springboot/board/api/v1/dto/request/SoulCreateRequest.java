@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.springboot.board.domain.entity.ImageEntity;
+
 @Getter @NoArgsConstructor
 public class SoulCreateRequest {
 
@@ -22,4 +24,5 @@ public class SoulCreateRequest {
     @Size(max = 15) private List<String> keywords;
     @Size(max = 255) private String creator;
     private String description;
+    private List<ImageEntity> images;
 }

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -46,8 +47,7 @@ public class SoulEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    // 이미지 연관
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "soulId", referencedColumnName = "id")
-    private List<ImageEntity> images;
+@OneToMany(mappedBy = "soul", cascade = CascadeType.ALL, orphanRemoval = true)
+private List<ImageEntity> images = new ArrayList<>();
+
 }

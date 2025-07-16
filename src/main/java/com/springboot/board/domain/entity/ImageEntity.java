@@ -14,8 +14,9 @@ public class ImageEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** 영혼과 연결 (nullable 허용 시 ‘공용 이미지’도 가능) */
-    private Integer soulId;
+@ManyToOne(fetch = FetchType.LAZY)
+@JoinColumn(name = "soul_id")
+private SoulEntity soul;
 
     /** REPRESENTATIVE, LOCATION, WEARING_SHOT, GESTURE 등 */
     @Column(length = 30, nullable = false)

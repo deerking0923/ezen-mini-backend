@@ -1,8 +1,11 @@
 // src/main/java/com/springboot/board/application/service/ImageService.java
 package com.springboot.board.application.service;
 
+import com.springboot.board.common.exception.DataNotFoundException;
 import com.springboot.board.domain.entity.ImageEntity;
+import com.springboot.board.domain.entity.SoulEntity;
 import com.springboot.board.domain.repository.ImageRepository;
+import com.springboot.board.domain.repository.SoulRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +22,7 @@ import java.util.UUID;
 public class ImageService {
 
     private final ImageRepository imageRepository;
+    private final SoulRepository soulRepository;
 
     /** 저장 경로 (application.properties 로 빼도 됨) */
     private static final Path UPLOAD_DIR = Paths.get("uploads");
@@ -26,6 +30,7 @@ public class ImageService {
     /** 업로드 */
     @Transactional
     public ImageEntity upload(Integer soulId, String imageType, MultipartFile file) throws IOException {
+
 
         if (!Files.exists(UPLOAD_DIR)) Files.createDirectories(UPLOAD_DIR);
 
@@ -35,13 +40,19 @@ public class ImageService {
         Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
 
         ImageEntity entity = ImageEntity.builder()
-                .soulId(soulId)
                 .imageType(imageType)
                 .fileName(uniqueName)
-                .url("/uploads/" + uniqueName)           // 정적 매핑 그대로 사용
+                .url("/uploads/" + uniqueName)
                 .fileSize(file.getSize())
                 .uploadedAt(LocalDateTime.now())
                 .build();
+
+        // soulId가 넘어오면 연관관계 연결
+        if (soulId != null) {
+            SoulEntity soul = soulRepository.findById(soulId)
+                    .orElseThrow(() -> new DataNotFoundException("영혼이 존재하지 않습니다. id=" + soulId));
+            entity.setSoul(soul);
+        }
 
         return imageRepository.save(entity);
     }
@@ -52,16 +63,13 @@ public class ImageService {
         ImageEntity existing = imageRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("image not found"));
 
-        // 1) 기존 파일 삭제
         Files.deleteIfExists(UPLOAD_DIR.resolve(existing.getFileName()));
 
-        // 2) 새 파일 저장
         String ext = getExtension(newFile.getOriginalFilename());
         String uniqueName = UUID.randomUUID() + ext;
         Files.copy(newFile.getInputStream(), UPLOAD_DIR.resolve(uniqueName),
-                   StandardCopyOption.REPLACE_EXISTING);
+                StandardCopyOption.REPLACE_EXISTING);
 
-        // 3) 메타데이터 업데이트
         existing.setFileName(uniqueName);
         existing.setUrl("/uploads/" + uniqueName);
         existing.setFileSize(newFile.getSize());

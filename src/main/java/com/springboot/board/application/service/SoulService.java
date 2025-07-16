@@ -5,6 +5,7 @@ import com.springboot.board.api.v1.dto.request.SoulUpdateRequest;
 import com.springboot.board.api.v1.dto.response.SoulResponse;
 import com.springboot.board.application.mapper.SoulMapper;
 import com.springboot.board.common.exception.DataNotFoundException;
+import com.springboot.board.domain.entity.ImageEntity;
 import com.springboot.board.domain.entity.SoulEntity;
 import com.springboot.board.domain.repository.SoulRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +28,21 @@ public class SoulService {
         private final SoulRepository soulRepository;
         private final SoulMapper mapper;
 
-        /** 생성 */
-        @Transactional
-        public SoulResponse createSoul(SoulCreateRequest req) {
-                SoulEntity saved = soulRepository.save(mapper.toEntity(req));
-                return mapper.toResponse(saved);
+@Transactional
+public SoulResponse createSoul(SoulCreateRequest req) {
+    SoulEntity entity = mapper.toEntity(req);
+
+    if (req.getImages() != null) {
+        for (ImageEntity img : req.getImages()) {
+            img.setSoul(entity);             // 연관관계 연결
         }
+        entity.setImages(req.getImages());   // 리스트 등록
+    }
+
+    SoulEntity saved = soulRepository.save(entity);
+    return mapper.toResponse(saved);
+}
+
 
         /** 수정 */
         @Transactional
