@@ -6,6 +6,7 @@ import com.springboot.board.domain.entity.ImageEntity;
 import com.springboot.board.domain.entity.SoulEntity;
 import com.springboot.board.domain.repository.ImageRepository;
 import com.springboot.board.domain.repository.SoulRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -25,36 +26,44 @@ public class ImageService {
     private final ImageRepository imageRepository;
     private final SoulRepository soulRepository;
 
-    /** 업로드할 디렉토리 (application.yml 로 분리해도 됩니다) */
+    /** application.yml 에서 주입 **/
     @Value("${app.upload-dir:uploads}")
     private String uploadDir;
 
-    /** 호스트 절대경로 (application.yml 에 설정) */
-    @Value("${app.base-url}")
+    @Value("${app.base-url:https://localhost:8080}")
     private String baseUrl;
+
+    private Path uploadPath;
+
+    /** uploadDir 프로퍼티 기반으로 실제 Path 객체 생성 */
+    @PostConstruct
+    public void init() throws IOException {
+        uploadPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+    }
 
     /** 업로드 */
     @Transactional
     public ImageEntity upload(Integer soulId, String imageType, MultipartFile file) throws IOException {
-        Path uploadPath = Paths.get(uploadDir);
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
-        }
-
+        // 파일명 생성
         String ext = getExtension(file.getOriginalFilename());
         String uniqueName = UUID.randomUUID() + ext;
         Path target = uploadPath.resolve(uniqueName);
         Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
 
+        // DB에 저장할 엔티티 준비
         ImageEntity entity = ImageEntity.builder()
                 .imageType(imageType)
                 .fileName(uniqueName)
-                // 절대경로로 저장
+                // 클라이언트가 그대로 사용 가능한 절대 URL
                 .url(baseUrl + "/" + uploadDir + "/" + uniqueName)
                 .fileSize(file.getSize())
                 .uploadedAt(LocalDateTime.now())
                 .build();
 
+        // soulId 연관관계 처리
         if (soulId != null) {
             SoulEntity soul = soulRepository.findById(soulId)
                     .orElseThrow(() -> new DataNotFoundException("영혼이 존재하지 않습니다. id=" + soulId));
@@ -67,12 +76,10 @@ public class ImageService {
     /** 교체(수정) */
     @Transactional
     public ImageEntity replace(Long id, MultipartFile newFile) throws IOException {
-        Path uploadPath = Paths.get(uploadDir);
-
         ImageEntity existing = imageRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("이미지를 찾을 수 없습니다. id=" + id));
+                .orElseThrow(() -> new IllegalArgumentException("image not found"));
 
-        // 기존 파일 삭제
+        // 이전 파일 삭제
         Files.deleteIfExists(uploadPath.resolve(existing.getFileName()));
 
         // 새 파일 저장
@@ -81,6 +88,7 @@ public class ImageService {
         Path target = uploadPath.resolve(uniqueName);
         Files.copy(newFile.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
 
+        // 엔티티 업데이트
         existing.setFileName(uniqueName);
         existing.setUrl(baseUrl + "/" + uploadDir + "/" + uniqueName);
         existing.setFileSize(newFile.getSize());
@@ -91,15 +99,14 @@ public class ImageService {
     /** 삭제 */
     @Transactional
     public void delete(Long id) throws IOException {
-        Path uploadPath = Paths.get(uploadDir);
         ImageEntity img = imageRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("이미지를 찾을 수 없습니다. id=" + id));
+                .orElseThrow(() -> new IllegalArgumentException("image not found"));
         Files.deleteIfExists(uploadPath.resolve(img.getFileName()));
         imageRepository.delete(img);
     }
 
     private String getExtension(String original) {
-        int dot = (original == null) ? -1 : original.lastIndexOf('.');
+        int dot = original == null ? -1 : original.lastIndexOf('.');
         return (dot == -1) ? "" : original.substring(dot);
     }
 }
