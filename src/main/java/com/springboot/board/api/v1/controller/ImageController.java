@@ -1,11 +1,10 @@
-// src/main/java/com/springboot/board/api/v1/controller/ImageController.java
 package com.springboot.board.api.v1.controller;
 
+import com.springboot.board.api.v1.dto.response.ImageResponse;
 import com.springboot.board.application.service.ImageService;
 import com.springboot.board.common.response.ApiResponse;
 import com.springboot.board.domain.entity.ImageEntity;
 import com.springboot.board.domain.repository.ImageRepository;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,39 +19,68 @@ public class ImageController {
     private final ImageService imageService;
     private final ImageRepository imageRepository;
 
-    /** 업로드 */
+    /** 1) 업로드 **/
     @PostMapping
-    public ApiResponse<ImageEntity> upload(
+    public ApiResponse<ImageResponse> upload(
             @RequestParam(required = false) Integer soulId,
             @RequestParam String imageType,
             @RequestParam MultipartFile file) throws Exception {
-        return ApiResponse.success(imageService.upload(soulId, imageType, file));
+
+        ImageEntity img = imageService.upload(soulId, imageType, file);
+        return ApiResponse.success(toDto(img));
     }
 
-    /** 교체 */
+    /** 2) 교체 **/
     @PutMapping("/{id}")
-    public ApiResponse<ImageEntity> replace(
+    public ApiResponse<ImageResponse> replace(
             @PathVariable Long id,
             @RequestParam MultipartFile file) throws Exception {
-        return ApiResponse.success(imageService.replace(id, file));
+
+        ImageEntity img = imageService.replace(id, file);
+        return ApiResponse.success(toDto(img));
     }
 
-    /** 삭제 */
+    /** 3) 삭제 **/
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) throws Exception {
+    public ApiResponse<Void> delete(@PathVariable Long id) throws Exception {
         imageService.delete(id);
+        return ApiResponse.success(null);
     }
 
-    /** 전체/페이징/필터 목록 */
+    /** 4) 한 개만 조회 **/
+    @GetMapping("/{id}")
+    public ApiResponse<ImageResponse> getOne(@PathVariable Long id) {
+        ImageEntity img = imageRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Image not found. id=" + id));
+        return ApiResponse.success(toDto(img));
+    }
+
+    /** 5) 리스트(페이징 + 선택적 soulId 필터) **/
     @GetMapping
-    public ApiResponse<Page<ImageEntity>> list(
+    public ApiResponse<Page<ImageResponse>> list(
             @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) Integer soulId) {
 
-        var pageable = PageRequest.of(page, 20);
-        Page<ImageEntity> result = (soulId == null)
-                ? imageRepository.findAll(pageable)
-                : imageRepository.findAllBySoulId(soulId, pageable);
-        return ApiResponse.success(result);
+        var pr = PageRequest.of(page, size);
+        Page<ImageEntity> entities = (soulId == null)
+            ? imageRepository.findAll(pr)
+            : imageRepository.findAllBySoulId(soulId, pr);
+
+        Page<ImageResponse> dtos = entities.map(this::toDto);
+        return ApiResponse.success(dtos);
+    }
+
+    /** 공통 DTO 변환 메서드 **/
+    private ImageResponse toDto(ImageEntity img) {
+        return ImageResponse.builder()
+                .id(img.getId())
+                .soulId(img.getSoul() != null ? img.getSoul().getId() : null)
+                .imageType(img.getImageType())
+                .url(img.getUrl())
+                .fileName(img.getFileName())
+                .fileSize(img.getFileSize())
+                .uploadedAt(img.getUploadedAt())
+                .build();
     }
 }
