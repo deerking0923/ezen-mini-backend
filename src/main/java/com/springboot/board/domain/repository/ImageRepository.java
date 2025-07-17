@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ImageRepository extends JpaRepository<ImageEntity, Long> {
-
+Page<ImageEntity> findAllBySoulIdAndImageType(Integer soulId, String imageType, Pageable pageable);
     /** 영혼별 필터용(선택) */
     Page<ImageEntity> findAllBySoulId(Integer soulId, Pageable pageable);
 }
